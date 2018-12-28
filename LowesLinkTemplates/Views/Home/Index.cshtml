@@ -1,0 +1,13 @@
+﻿@*getting data from Home Controller's Index Action Result*@
+@model List<LowesLinkTemplates.Models.LLMain>
+@{
+    ViewBag.Title = Model[0].PageName.Split('.')[0];
+}
+
+@*Placing Page's content*@
+<div id="pageCommonContent">
+    @if (@Model != null)
+    {
+        @Html.Raw(HttpUtility.HtmlDecode(Model[0].Content))
+    }
+</div>

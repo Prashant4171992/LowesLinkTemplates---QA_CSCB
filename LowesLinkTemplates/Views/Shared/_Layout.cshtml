@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Content/img/loweslink.png" />
+    <title>LowesLink® @ViewBag.Title</title>
+    @Styles.Render("~/Styles/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @* page's Header html *@
+    <header class="header" data-ng-init="onloadFun()">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <div class="navbar-header">
+                        <img src="~/Content/img/loweslink.png" alt="..." class="img-rounded" style="width: 12%; display: none;" />
+                        <a href='@Url.Action("Index", "Home", new { id = "Home.aspx" })'
+                           class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block">
+                                <span>Lowes </span>
+                                <strong>Link</strong>
+                            </div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none">
+                                <strong>LL</strong>
+                            </div>
+                        </a>
+                        <a id="toggle-btn" href="#" class="menu-btn active" style="display:none;"><span></span><span></span><span></span></a>
+                    </div>
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <li class="nav-item" style="display:none;">
+                            <a href='@Url.Action("Index", "Home", new { id = "Home.aspx" })'
+                               class="nav-link logout">
+                                <i class="fa fa-home"></i>
+                                <span class="d-none d-sm-inline ml-2">Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item text-center text-bold">
+                            @DateTime.Now.DayOfWeek, <br /> @DateTime.Now.ToString("MMMM")  @DateTime.Now.ToString("dd") @DateTime.Now.ToString("yyyy")                            
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @*Side nav bar html*@
+    <div class="page-content d-flex align-items-stretch">
+        <nav class="side-navbar shrinked">
+            <ul class="list-unstyled">
+                <li>
+                    <a name="Lowes Home" href='@Url.Action("Index", "Home", new { id = "Home.aspx" })'>
+                        <i class='fa fa-home'></i> Home
+                    </a>
+                </li>
+                <li style="background-color: #2FA2E5;">
+                    <a name="Lowes Partner Information" id="partnerAnch"
+                       href="#partnerInfoDropdown"
+                       aria-expanded="false"
+                       data-toggle="collapse">
+                        <i class="fa fa-window-restore"></i>
+                        Partner Information
+                    </a>
+                    <ul id="partnerInfoDropdown"
+                        class="list-unstyled collapse">
+                        <li>
+                            <a href='@Url.Action("Index", "Home", new { id = "NewPartnerInformation.aspx" })'>New</a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Home", new { id = "ExistingPartnerInformation.aspx" })'>Existing</a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Home", new { id = "lgsourcing.aspx" })'>LG Sourcing</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a name="Lowes Product Information" id="productInfoNavLink" href='@Url.Action("Index", "Home", new { id = "Product_Information.aspx" })'>
+                        <i class='fa fa-window-restore'></i> Product Information
+                    </a>
+                </li>
+                <li>
+                    <a name="Lowes EDI" href='@Url.Action("Index", "Home", new { id = "Edi.aspx" })'>
+                        <i class="fa fa-window-restore"></i>EDI
+
+                    </a>
+                </li>
+                <li>
+                    <a name="Lowes Canada" href='@Url.Action("Index", "Home", new { id = "Canada.aspx" })'>
+                        <i class="fa fa-window-restore"></i>Lowe's Canada
+
+                    </a>
+                </li>
+                <li>
+                    <a name="Lowes Mexico" href='@Url.Action("Index", "Home", new { id = "Mexico.aspx" })'>
+                        <i class="fa fa-window-restore"></i>Lowe's Mexico
+
+                    </a>
+                </li>
+            </ul>
+            <div class="align-items-stretch text-center" id="sideContentDiv" style="padding-bottom: 15%; display:none;">
+                <h2 class="heading text-center text-capitalize">Welcome</h2>
+                <h2 class="heading text-center text-capitalize">To</h2>
+                <h2 class="heading text-center text-capitalize">
+                    LowesLink
+                    <i class="fa fa-registered"></i>
+                </h2>
+                <img src="~/Content/img/LowesLogo.png"
+                     alt="Lowe's Logo"
+                     class="img-rounded mx-auto d-block mb-2"
+                     style="width: 32%;" />
+                <span>
+                    Your business connection to Lowe's Home Improvement Warehouse
+                </span>
+                <br />
+                <br />
+                <i class="fa fa-envelope-square" style="font-size: xx-large;"></i>
+                <br />
+                <a id="mailtoFooter" href="mailto:LowesLink@lowes.com">
+                    LowesLink@Lowes.com
+                </a>
+                <br />
+                <br />
+                <i class="fa fa-credit-card" style="font-size: xx-large;"></i>
+                <br />
+                <a id="giftCardFooter" href="#">
+                    Gift Cards
+                </a>
+            </div>
+        </nav>
+        @* Page's Inner Content html *@
+        <div class="content-inner">
+            @RenderBody()
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <p>© 2018 by Lowe's®. Lowe's and the gable design are registered trademarks of LF, LLC.</p>
+                            <p>LowesLink® is a registered trademark of LF, LLC. All Rights Reserved.</p>
+                            <p class="text-bold">Lowe's Improving Home Improvement (SM)</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
