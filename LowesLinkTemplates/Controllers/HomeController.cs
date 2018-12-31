@@ -32,14 +32,24 @@ namespace LowesLinkTemplates.Controllers
                         System.Web.HttpContext.Current.Session.Contents.RemoveAll();
                         //saving all data into session object 'AllContent'
                         System.Web.HttpContext.Current.Session["AllContent"] = con.ContentList;
-                        requ = getAllContent(id, requ, con.ContentList);
+                        if (id == null)
+                        {
+                            id = "Home.aspx";
+                        }
+                        List<LLMain> currentPageItem = con.ContentList.Where(p => p.PageName.ToLower() == id.ToLower()).ToList();
+                        requ = getAllContent(id, requ, currentPageItem);
                     }
                     //when session already exists
                     else
                     {
                         //getting data back from session object 'AllContent'
                         var allContent = Session["AllContent"] as List<LLMain>;
-                        requ = getAllContent(id, requ, allContent);
+                        if (id == null)
+                        {
+                            id = "Home.aspx";
+                        }
+                        List<LLMain> currentPageItem = allContent.Where(p => p.PageName.ToLower() == id.ToLower()).ToList();
+                        requ = getAllContent(id, requ, currentPageItem);
                     }
                     //requ = getAllContent(id, requ, con.ContentList);
                 }
@@ -59,67 +69,29 @@ namespace LowesLinkTemplates.Controllers
         /// </summary>
         public List<LLMain> getAllContent(string id, List<LLMain> requ, List<LLMain> allContent)
         {
-            // Content structuring for all the pages except for Home Page
-            if (id != null)
+            foreach (var i in allContent)
             {
-                foreach (var i in allContent)
+                HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
+                htmlDocument.LoadHtml(i.Content);
+                if (System.Web.HttpContext.Current.Session.IsNewSession)
                 {
-                    if (i.PageName.ToLower() == id.ToLower())
+                    var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='ms-rte-layoutszone-inner']");
+                    string res = "";
+                    foreach (HtmlNode item in htmlNodes)
                     {
-                        HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                        htmlDocument.LoadHtml(i.Content);
-                        if (System.Web.HttpContext.Current.Session.IsNewSession)
-                        {
-                            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='ms-rte-layoutszone-inner']");
-                            string res = "";
-                            foreach (HtmlNode item in htmlNodes)
-                            {
-                                res += item.InnerHtml;
-                            }
-                            i.Content = res;
-                            requ.Add(i);
-                        }
-                        else
-                        {
-                            string res = "";
-                            res = htmlDocument.DocumentNode.InnerHtml;
-                            i.Content = res;
-                            requ.Add(i);
-                        }
-                                                                        
+                        res += item.InnerHtml;
                     }
+                    i.Content = res;
+                    requ.Add(i);
                 }
-            }
-            // Content structuring for Home Page
-            if (id == null)
-            {
-                foreach (var i in allContent)
+                else
                 {
-                    if (i.PageName.ToLower() == "Home.aspx".ToLower())
-                    {
-                        HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                        htmlDocument.LoadHtml(i.Content);
-                        if (System.Web.HttpContext.Current.Session.IsNewSession)
-                        {
-                            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='ms-rte-layoutszone-inner']");
-                            string res = "";
-                            foreach (HtmlNode item in htmlNodes)
-                            {
-                                res += item.InnerHtml;
-                            }
-                            i.Content = res;
-                            requ.Add(i);
-                        }
-                        else
-                        {
-                            string res = "";
-                            res = htmlDocument.DocumentNode.InnerHtml;
-                            i.Content = res;
-                            requ.Add(i);
-                        }
-                    }
+                    string res = "";
+                    res = htmlDocument.DocumentNode.InnerHtml;
+                    i.Content = res;
+                    requ.Add(i);
                 }
-            }
+            }            
             //when page not found
             if (requ.Count() == 0)
             {
