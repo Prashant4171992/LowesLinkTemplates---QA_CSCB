@@ -18,26 +18,31 @@ textarea {
     max-width: 300px;
 }
 
-.h4, h4{
+/* setting-up default font-size for all h3 elements */
+.h4, h4 {
     font-size: 1rem !important;
 }
 
-div.card-header img{
+div.card-header img {
     max-width: 75% !important;
 }
 
+/* Home Page each section's default height */
 section#contentPageProducts {
     height: 250px;
 }
 
+/* page header bar width*/
 .page-header {
     width: 103%;
 }
 
-.ms-rteForeColor-2{
+/*Class added by SharePoint for color - "Red"*/
+.ms-rteForeColor-2 {
     color: red;
 }
 
+/* Home Page card-header default color */
 .card-header h2, .project h3, .project small {
     color: #fff !important;
 }
@@ -47,45 +52,32 @@ section#contentPageProducts {
     background-color: rgb(47, 162, 229);
 }
 
-#pageContentText1 {
-    margin-left: 30px !important;
-    display: block;
-    margin-inline-start: 2px;
-    margin-inline-end: 2px;
-    padding-block-start: 0.35em;
-    padding-inline-start: 0.75em;
-    padding-inline-end: 0.75em;
-    padding-block-end: 0.625em;
-    min-inline-size: min-content;
-    border-width: 2px;
-    border-style: groove;
-    border-color: threedface;
-    border-image: initial;
-    padding-left: 20px;
-    padding-top: 20px;
-}
-
-#pageCommonContent{
+/* default page bottom padding */
+#pageCommonContent {
     padding-bottom: 20px;
 }
 
+/* list default styles */
 ul {
     list-style: none;
     font-family: Verdana, Helvetica;
     font-size: small;
 }
 
+/* list default styles */
 ol {
     font-family: Verdana, Helvetica;
     font-size: small;
 }
 
+/* Spans inside fieldset, default styles */
 fieldset span {
     color: black !important;
     font-family: verdana, sans-serif !important;
     font-size: small !important;
 }
 
+/* list default styles */
 #pageCommonContent ul li:before {
     content: '';
     display: inline-block;
@@ -98,6 +90,7 @@ fieldset span {
     margin-bottom: -2px;
 }
 
+/* anchor tag default styles */
 #pageCommonContent a {
     cursor: pointer;
     color: #2FA2E5;
@@ -106,6 +99,7 @@ fieldset span {
     text-decoration: none;
 }
 
+    /* anchor tag on-hover default styles */
     #pageCommonContent a:hover {
         cursor: pointer;
         color: #2FA2E5;
@@ -114,6 +108,7 @@ fieldset span {
         text-decoration: none;
     }
 
+    /* anchor tag visited default styles */
     #pageCommonContent a:visited {
         cursor: pointer;
         color: #2FA2E5;
@@ -122,6 +117,7 @@ fieldset span {
         text-decoration: none;
     }
 
+/* All Below Styles are default and no changes required in these */
 .project small a {
     cursor: pointer;
     color: #fff !important;
@@ -486,24 +482,6 @@ input {
     .card-header h5,
     .card-header h6 {
         margin-bottom: 0;
-    }
-
-.breadcrumb-holder {
-    background: #fff;
-}
-
-.breadcrumb {
-    background: #fff;
-    position: relative;
-    z-index: 7;
-    border-radius: 0;
-    padding: 15px 0;
-    margin-bottom: 0;
-}
-
-    .breadcrumb li.breadcrumb-item {
-        color: #aaa;
-        font-weight: 300;
     }
 
 /*=== Helpers ===*/
@@ -1279,70 +1257,6 @@ nav.navbar {
         }
 }
 
-section.dashboard-counts .icon {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    min-width: 40px;
-    max-width: 40px;
-    border-radius: 50%;
-}
-
-section.dashboard-counts .title {
-    font-size: 1.1em;
-    font-weight: 300;
-    color: #777;
-    margin: 0 20px;
-}
-
-section.dashboard-counts .progress {
-    margin-top: 10px;
-    height: 4px;
-}
-
-section.dashboard-counts .number {
-    font-size: 1.8em;
-    font-weight: 300;
-}
-
-    section.dashboard-counts .number strong {
-        font-weight: 700;
-    }
-
-section.dashboard-counts .row {
-    padding: 30px 15px;
-    margin: 0;
-}
-
-section.dashboard-counts div[class*='col-'] .item {
-    border-right: 1px solid #eee;
-    padding: 15px 0;
-}
-
-section.dashboard-counts div[class*='col-']:last-of-type .item {
-    border-right: none;
-}
-
-@media (max-width: 1199px) {
-    section.dashboard-counts div[class*='col-']:nth-of-type(2) .item {
-        border-right: none;
-    }
-}
-
-@media (max-width: 575px) {
-    section.dashboard-counts div[class*='col-'] .item {
-        border-right: none;
-    }
-}
-
-/*  DASHBOARD HEADER  MEDIAQUERIES ------------------------*/
-@media (max-width: 991px) {
-    section.dashboard-header div[class*='col-'] {
-        margin-bottom: 20px;
-    }
-}
-
 /*
 * ==========================================================
 *     PROJECTS SECTION
@@ -1564,19 +1478,6 @@ footer.main-footer {
         text-align: center !important;
     }
 }
-
-section.charts div[class*="col-"] {
-    margin-bottom: 30px;
-}
-
-section.charts header {
-    padding: 30px 0;
-}
-
-section.charts div[class*="col-"] {
-    margin-bottom: 0;
-}
-
 
 .input-group .dropdown-toggle {
     background: #f5f5f5;
@@ -2910,47 +2811,3 @@ a > code {
             margin-left: 15px;
         }
 }
-
-.custom-select {
-    display: inline-block;
-    width: 100%;
-    height: calc(2.25rem + 2px);
-    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-    line-height: 1.5;
-    color: #495057;
-    vertical-align: middle;
-    background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23333' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
-    background-size: 8px 10px;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-    .custom-select:focus {
-        border-color: #e0dcfb;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(224, 220, 251, 0.5);
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(224, 220, 251, 0.5);
-    }
-
-        .custom-select:focus::-ms-value {
-            color: #495057;
-            background-color: #fff;
-        }
-
-    .custom-select[multiple], .custom-select[size]:not([size="1"]) {
-        height: auto;
-        padding-right: 0.75rem;
-        background-image: none;
-    }
-
-    .custom-select:disabled {
-        color: #868e96;
-        background-color: #e9ecef;
-    }
-
-    .custom-select::-ms-expand {
-        opacity: 0;
-    }
