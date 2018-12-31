@@ -69,6 +69,7 @@ namespace LowesLinkTemplates.Controllers
         /// </summary>
         public List<LLMain> getAllContent(string id, List<LLMain> requ, List<LLMain> allContent)
         {
+            //content structuring for all the pages
             foreach (var i in allContent)
             {
                 HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
