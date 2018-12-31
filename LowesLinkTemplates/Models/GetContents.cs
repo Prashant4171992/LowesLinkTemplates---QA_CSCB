@@ -85,7 +85,6 @@ namespace LowesLinkTemplates.Models
                     contentListObj.Add(llmainPropObj);
                 }
             }
-            System.Diagnostics.Debug.WriteLine(urlDictProp.Count());
             return contentListObj;
         }
 
