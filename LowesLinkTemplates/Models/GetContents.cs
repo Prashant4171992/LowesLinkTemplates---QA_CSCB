@@ -38,52 +38,60 @@ namespace LowesLinkTemplates.Models
         public static List<LLMain> LoadLowesLinkContent()
         {
             lastKey = null;
+            LLMainErr Model = new LLMainErr();
+            List<LLMain> contentListObj = new List<LLMain>();
             /// <summary>
             /// contentListObj List of type LLMain storing all the Wiki page's content and other metadata properties
             /// </summary>
-            List<LLMain> contentListObj = new List<LLMain>();
-            using (ctx = GetContext())
-            {
-                List olist = ctx.Web.Lists.GetByTitle(ListName);
-                CamlQuery qry = new CamlQuery();
-                qry.ViewXml = @"<View Scope='Recursive'>
+            try
+            {                
+                using (ctx = GetContext())
+                {
+                    List olist = ctx.Web.Lists.GetByTitle(ListName);
+                    CamlQuery qry = new CamlQuery();
+                    qry.ViewXml = @"<View Scope='Recursive'>
                                      <Query>
                                      </Query>
                                 </View>";
 
-                ListItemCollection listCol = olist.GetItems(qry);
-                ListItemCollection items = listCol;
-                ctx.Load(items, icol => icol.Include(i => i["WikiField"], i => i.File.Name));
-                ctx.ExecuteQuery();
-                urlDictProp.Clear();
-                /// <summary>
-                /// Loop through all Wiki pages
-                /// </summary>
-                foreach (ListItem item in items)
-                {
+                    ListItemCollection listCol = olist.GetItems(qry);
+                    ListItemCollection items = listCol;
+                    ctx.Load(items, icol => icol.Include(i => i["WikiField"], i => i.File.Name));
+                    ctx.ExecuteQuery();
+                    urlDictProp.Clear();
                     /// <summary>
-                    /// object intialization of type LLMain, for storing each wiki page's content and other metadata properties
+                    /// Loop through all Wiki pages
                     /// </summary>
-                    LLMain llmainPropObj = new LLMain();
-                    llmainPropObj.PageName = Convert.ToString(item.File.Name);
-                    llmainPropObj.Content = Convert.ToString(item["WikiField"]);
-                    /// <summary>
-                    /// getting all the links from each wiki page's html content
-                    /// </summary>
-                    HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                    htmlDocument.LoadHtml(llmainPropObj.Content);
-                    if (htmlDocument.DocumentNode.SelectNodes("//a") != null)
+                    foreach (ListItem item in items)
                     {
                         /// <summary>
-                        /// Forming links for documents, internal page links and external page links
+                        /// object intialization of type LLMain, for storing each wiki page's content and other metadata properties
                         /// </summary>
-                        llmainPropObj.Content = generateDocumentUrls(htmlDocument, llmainPropObj.Content);
+                        LLMain llmainPropObj = new LLMain();
+                        llmainPropObj.PageName = Convert.ToString(item.File.Name);
+                        llmainPropObj.Content = Convert.ToString(item["WikiField"]);
+                        /// <summary>
+                        /// getting all the links from each wiki page's html content
+                        /// </summary>
+                        HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
+                        htmlDocument.LoadHtml(llmainPropObj.Content);
+                        if (htmlDocument.DocumentNode.SelectNodes("//a") != null)
+                        {
+                            /// <summary>
+                            /// Forming links for documents, internal page links and external page links
+                            /// </summary>
+                            llmainPropObj.Content = generateDocumentUrls(htmlDocument, llmainPropObj.Content);
+                        }
+                        /// <summary>
+                        /// adding updated page's links and other content to List contentListObj of type LLMain 
+                        /// </summary>
+                        contentListObj.Add(llmainPropObj);
                     }
-                    /// <summary>
-                    /// adding updated page's links and other content to List contentListObj of type LLMain 
-                    /// </summary>
-                    contentListObj.Add(llmainPropObj);
                 }
+            }
+            catch (Exception ex)
+            {
+                Model.Error = ex.Message;
             }
             return contentListObj;
         }
@@ -114,17 +122,10 @@ namespace LowesLinkTemplates.Models
                                 if (idx != -1)
                                 {
                                     //getting file name from relative path of respective file
-                                    fileName = hrefVal.Substring(idx + 1);
-                                    lastKey = fileName.Split('.')[0];
-                                    lastKey = lastKey.Contains("%20") ? lastKey.Replace("%20", " ") : lastKey;
-                                    lastKey = lastKey.Contains("%27") ? lastKey.Replace("%27", "'") : lastKey;
-                                    hrefVal = hrefVal.Contains("%27") ? hrefVal.Replace("%27", "'") : hrefVal;
-                                    hrefVal = hrefVal.Contains("%20") ? hrefVal.Replace("%20", " ") : hrefVal;
-                                    hrefVal = hrefVal.Contains("&#58;") ? hrefVal.Replace("&#58;", ":") : hrefVal;                                    
+                                    fileName = hrefVal.Substring(idx + 1);                                   
                                 }
-                                urlDictProp[lastKey] = hrefVal;
+                                urlDictProp[fileName.ToString()] = hrefVal.ToString();
                                 string oldHref = nod.Attributes["href"].Value;
-                                fileName = fileName != "" ? fileName.Split('.')[0] : fileName; 
                                 string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName;
                                 result = result.Replace(oldHref, updatedHref);                                
                             }
@@ -234,7 +235,7 @@ namespace LowesLinkTemplates.Models
                 using (ClientContext ctx = GetContext())
                 {
                     List olist = ctx.Web.Lists.GetByTitle(ListName);
-                    bool relativePathExist = urlDictProp.TryGetValue(id.ToString(), out string relativePath); //urlDictProp[id.ToString()];
+                    bool relativePathExist = urlDictProp.TryGetValue(Uri.EscapeDataString(id), out string relativePath); //urlDictProp[id.ToString()];
                     if (relativePathExist)
                     {
                         Microsoft.SharePoint.Client.File file = ctx.Web.GetFileByServerRelativeUrl(relativePath);

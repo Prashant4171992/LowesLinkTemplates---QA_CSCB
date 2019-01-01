@@ -16,35 +16,40 @@ namespace LowesLinkTemplates.Controllers
             Stream s = GetContents.GetStream(id);
             string[] openExtensionsForBrowser = { "pdf", "jpeg", "jpg", "png", "gif", "ico" };
             string[] downloadExtensionsForBrowser = { "zip", "doc", "docx", "xls", "xlsx", "xlsm", "xlt" ,"ppt", "pptx", "avi", "flv", "wmv", "mov", "mp4", "3gp" };
-            bool relativePathExist = GetContents.urlDictProp.TryGetValue(id.ToString(), out string relativePath); //urlDictProp[id.ToString()];
-            string fileType = "";
-            if (relativePathExist)
-            {
-                fileType = relativePath.Split('.')[1].ToLower();
-            }            
+            bool relativePathExist = GetContents.urlDictProp.TryGetValue(Uri.EscapeDataString(id), out string relativePath); //urlDictProp[id.ToString()];
+            string fileType = null;                        
             string fileContentType = "";
-            string fileName = "";
+            string fileName = id;
             if (s != null)
             {
+                fileType = relativePathExist ? relativePath.Split('.')[1].ToLower() : null;
                 //returning file properties, which can't be view in the browser and should get downloaded
                 if (downloadExtensionsForBrowser.Any(fileType.Contains))
                 {
-                    int idx = relativePath.LastIndexOf('/');
-                    if (idx != -1)
-                    {
-                        //getting file name from relative path of respective file
-                        fileName = relativePath.Substring(idx + 1);
-                    }
                     //getting file content type
-                    fileContentType = getFileContentType(fileType);                    
-                    return File(s, fileContentType, fileName);
+                    if (fileType != null)
+                    {
+                        fileContentType = getFileContentType(fileType);
+                        return File(s, fileContentType, fileName);
+                    }
+                    if (fileType == null)
+                    {
+                        return Content("Document Not Found !!");
+                    }
                 }
-                //returning file properties, which can be view in the browsers
+                //returning file properties, which should be view in the browsers
                 else
                 {
                     //getting file content type
-                    fileContentType = getFileContentType(fileType);
-                    return File(s, fileContentType);
+                    if (fileType != null)
+                    {
+                        fileContentType = getFileContentType(fileType);
+                        return File(s, fileContentType);
+                    }
+                    if (fileType == null)
+                    {
+                        return Content("Document Not Found !!");
+                    }
                 }
             }
             //when the stream is null

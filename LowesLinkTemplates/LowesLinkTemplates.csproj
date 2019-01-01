@@ -366,6 +366,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Connected Services\Application Insights\ConnectedService.json" />
+    <None Include="Properties\PublishProfiles\loweslink150dev - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\LowesLinkDev - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\LowesLinkDev - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\loweslinkQA - Web Deploy.pubxml" />
