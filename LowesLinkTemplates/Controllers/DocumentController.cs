@@ -16,8 +16,12 @@ namespace LowesLinkTemplates.Controllers
             Stream s = GetContents.GetStream(id);
             string[] openExtensionsForBrowser = { "pdf", "jpeg", "jpg", "png", "gif", "ico" };
             string[] downloadExtensionsForBrowser = { "zip", "doc", "docx", "xls", "xlsx", "xlsm", "xlt" ,"ppt", "pptx", "avi", "flv", "wmv", "mov", "mp4", "3gp" };
-            string relativePath = GetContents.urlDictProp[Convert.ToInt32(id)];
-            string fileType = relativePath.Split('.')[1].ToLower();
+            bool relativePathExist = GetContents.urlDictProp.TryGetValue(id.ToString(), out string relativePath); //urlDictProp[id.ToString()];
+            string fileType = "";
+            if (relativePathExist)
+            {
+                fileType = relativePath.Split('.')[1].ToLower();
+            }            
             string fileContentType = "";
             string fileName = "";
             if (s != null)

@@ -31,12 +31,13 @@ namespace LowesLinkTemplates.Controllers
                         //remove existing session objects
                         System.Web.HttpContext.Current.Session.Contents.RemoveAll();
                         //saving all data into session object 'AllContent'
-                        System.Web.HttpContext.Current.Session["AllContent"] = con.ContentList;
+                        List<LLMain> allContent = con.ContentList;
+                        System.Web.HttpContext.Current.Session["AllContent"] = allContent;
                         if (id == null)
                         {
                             id = "Home.aspx";
                         }
-                        List<LLMain> currentPageItem = con.ContentList.Where(p => p.PageName.ToLower() == id.ToLower()).ToList();
+                        List<LLMain> currentPageItem = allContent.Where(p => p.PageName.ToLower() == id.ToLower()).ToList();
                         requ = getAllContent(id, requ, currentPageItem);
                     }
                     //when session already exists

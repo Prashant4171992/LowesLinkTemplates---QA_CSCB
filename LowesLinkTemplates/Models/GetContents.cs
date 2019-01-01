@@ -26,8 +26,8 @@ namespace LowesLinkTemplates.Models
         public static string[] secureContentExtensions = { "ww3.loweslink"};
         public static string[] appPageExtensions = { "/Home/Index/" };
         public static List<LLMain> requ = new List<LLMain>();        
-        public static Dictionary<int, string> urlDictProp = new Dictionary<int, string>();
-        public static int lastKey = 0;
+        public static Dictionary<string, string> urlDictProp = new Dictionary<string, string>();
+        public static string lastKey = null;
         /// <summary>
         /// Get All Page's Content using LoadLowesLinkContent function
         /// </summary>
@@ -37,7 +37,7 @@ namespace LowesLinkTemplates.Models
         /// </summary>
         public static List<LLMain> LoadLowesLinkContent()
         {
-            lastKey = 0;
+            lastKey = null;
             /// <summary>
             /// contentListObj List of type LLMain storing all the Wiki page's content and other metadata properties
             /// </summary>
@@ -102,6 +102,7 @@ namespace LowesLinkTemplates.Models
                     if (nod.Attributes["href"] != null)
                     {
                         var hrefVal = nod.Attributes["href"].Value.ToLower();
+                        var fileName = "";
                         /// <summary>
                         /// generate links for documents
                         /// </summary>
@@ -109,11 +110,23 @@ namespace LowesLinkTemplates.Models
                         {
                             if (!secureContentExtensions.Any(hrefVal.Contains))
                             {
+                                int idx = hrefVal.LastIndexOf('/');
+                                if (idx != -1)
+                                {
+                                    //getting file name from relative path of respective file
+                                    fileName = hrefVal.Substring(idx + 1);
+                                    lastKey = fileName.Split('.')[0];
+                                    lastKey = lastKey.Contains("%20") ? lastKey.Replace("%20", " ") : lastKey;
+                                    lastKey = lastKey.Contains("%27") ? lastKey.Replace("%27", "'") : lastKey;
+                                    hrefVal = hrefVal.Contains("%27") ? hrefVal.Replace("%27", "'") : hrefVal;
+                                    hrefVal = hrefVal.Contains("%20") ? hrefVal.Replace("%20", " ") : hrefVal;
+                                    hrefVal = hrefVal.Contains("&#58;") ? hrefVal.Replace("&#58;", ":") : hrefVal;                                    
+                                }
                                 urlDictProp[lastKey] = hrefVal;
                                 string oldHref = nod.Attributes["href"].Value;
-                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + lastKey;
-                                result = result.Replace(oldHref, updatedHref);
-                                lastKey++;
+                                fileName = fileName != "" ? fileName.Split('.')[0] : fileName; 
+                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName;
+                                result = result.Replace(oldHref, updatedHref);                                
                             }
                         }
                         /// <summary>
@@ -214,7 +227,6 @@ namespace LowesLinkTemplates.Models
         {
             LLMainErr Model = new LLMainErr();
             Stream fileStream = null;
-            string base64 = null;
             string fileName = "";
             //ClientResult<Stream> streamResult = null;
             try
@@ -222,21 +234,22 @@ namespace LowesLinkTemplates.Models
                 using (ClientContext ctx = GetContext())
                 {
                     List olist = ctx.Web.Lists.GetByTitle(ListName);
-                    string relativePath = urlDictProp[Convert.ToInt32(id)];
-                    Microsoft.SharePoint.Client.File file = ctx.Web.GetFileByServerRelativeUrl(relativePath);
-                    ctx.Load(file);
-                    ClientResult<Stream> streamX = file.OpenBinaryStream();
-                    ctx.Load(file);
-                    ctx.ExecuteQuery();
-                    fileStream = streamX.Value;
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    fileName = file.Name;
-                    //ctx.Load(file);
-                    //ctx.ExecuteQuery();
-
-                    //var fileRef = file.ServerRelativeUrl;
-                    //var fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(ctx, fileRef);
-                    //fileStream = fileInfo.Stream;
+                    bool relativePathExist = urlDictProp.TryGetValue(id.ToString(), out string relativePath); //urlDictProp[id.ToString()];
+                    if (relativePathExist)
+                    {
+                        Microsoft.SharePoint.Client.File file = ctx.Web.GetFileByServerRelativeUrl(relativePath);
+                        ctx.Load(file);
+                        ClientResult<Stream> streamX = file.OpenBinaryStream();
+                        ctx.Load(file);
+                        ctx.ExecuteQuery();
+                        fileStream = streamX.Value;
+                        fileStream.Seek(0, SeekOrigin.Begin);
+                        fileName = file.Name;
+                    }
+                    else
+                    {
+                        fileStream = null;
+                    }
                 }
             }
             catch (Exception ex)
