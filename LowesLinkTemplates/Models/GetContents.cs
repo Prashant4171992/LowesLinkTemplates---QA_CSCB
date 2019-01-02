@@ -126,7 +126,7 @@ namespace LowesLinkTemplates.Models
                                 }
                                 urlDictProp[fileName.ToString()] = hrefVal.ToString();
                                 string oldHref = nod.Attributes["href"].Value;
-                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName;
+                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName.Split('.')[0] + "?ext=" + fileName.Split('.')[1];
                                 result = result.Replace(oldHref, updatedHref);                                
                             }
                         }
@@ -224,7 +224,7 @@ namespace LowesLinkTemplates.Models
         /// <summary>
         /// returns the document stream using corresponding relative document path
         /// </summary>        
-        public static Stream GetStream(string id)
+        public static Stream GetStream(string id, string ext)
         {
             LLMainErr Model = new LLMainErr();
             Stream fileStream = null;
@@ -235,7 +235,7 @@ namespace LowesLinkTemplates.Models
                 using (ClientContext ctx = GetContext())
                 {
                     List olist = ctx.Web.Lists.GetByTitle(ListName);
-                    bool relativePathExist = urlDictProp.TryGetValue(Uri.EscapeDataString(id), out string relativePath); //urlDictProp[id.ToString()];
+                    bool relativePathExist = urlDictProp.TryGetValue(Uri.EscapeDataString(id) + "." + ext, out string relativePath); //urlDictProp[id.ToString()];
                     if (relativePathExist)
                     {
                         Microsoft.SharePoint.Client.File file = ctx.Web.GetFileByServerRelativeUrl(relativePath);

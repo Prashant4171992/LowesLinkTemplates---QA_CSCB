@@ -366,10 +366,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Connected Services\Application Insights\ConnectedService.json" />
-    <None Include="Properties\PublishProfiles\loweslink150dev - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\LowesLinkDev - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\LowesLinkDev - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\loweslinkQA - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\loweslink150dev2 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -381,17 +378,17 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\EDI.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\EPI.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\GettingStarted.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\IVPI.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\LC.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\LM.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\LoadingBlocks.gif" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\loweslink.png" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\LowesLogo.png" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\NPI.jpg" />
-    <Content Include="sites\cscb\LowesLinkAssets\Images\PIIS.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\EDI.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\EPI.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\GettingStarted.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\IVPI.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\LC.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\LM.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\LoadingBlocks.gif" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\loweslink.png" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\LowesLogo.png" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\NPI.jpg" />
+    <Content Include="sitess\cscb\LowesLinkAssets\Images\PIIS.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

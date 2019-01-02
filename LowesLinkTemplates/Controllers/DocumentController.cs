@@ -11,12 +11,12 @@ namespace LowesLinkTemplates.Controllers
     public class DocumentController : Controller
     {
         // GET: Document Index Action Result
-        public ActionResult Index(string id)
+        public ActionResult Index(string id, string ext)
         {
-            Stream s = GetContents.GetStream(id);
+            Stream s = GetContents.GetStream(id, ext);
             string[] openExtensionsForBrowser = { "pdf", "jpeg", "jpg", "png", "gif", "ico" };
             string[] downloadExtensionsForBrowser = { "zip", "doc", "docx", "xls", "xlsx", "xlsm", "xlt" ,"ppt", "pptx", "avi", "flv", "wmv", "mov", "mp4", "3gp" };
-            bool relativePathExist = GetContents.urlDictProp.TryGetValue(Uri.EscapeDataString(id), out string relativePath); //urlDictProp[id.ToString()];
+            bool relativePathExist = GetContents.urlDictProp.TryGetValue(Uri.EscapeDataString(id) + "." + ext, out string relativePath); //urlDictProp[id.ToString()];
             string fileType = null;                        
             string fileContentType = "";
             string fileName = id;
@@ -30,7 +30,7 @@ namespace LowesLinkTemplates.Controllers
                     if (fileType != null)
                     {
                         fileContentType = getFileContentType(fileType);
-                        return File(s, fileContentType, fileName);
+                        return File(s, fileContentType, fileName + "." + ext);
                     }
                     if (fileType == null)
                     {
