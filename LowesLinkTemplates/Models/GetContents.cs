@@ -23,7 +23,7 @@ namespace LowesLinkTemplates.Models
         private static string ListName => ConfigurationManager.AppSettings.Get("SPListName").ToString();        
         public static string[] docExtensions = { ".docx", ".doc", ".pdf", ".zip", ".csv", ".xml", ".jpeg", ".jpg", ".png", ".gif", ".ico", ".ppt", ".pptx", ".xls", ".xlsx", ".xlsm", ".xlt" , ".txt", ".avi", ".flv", ".wmv", ".mov", ".mp4", ".3gp" };
         public static string[] spPageExtensions = { "/sites/", "~site/" };
-        public static string[] secureContentExtensions = { "ww3.loweslink"};
+        public static string[] secureContentExtensions = { "ww3.loweslink", "secure.loweslink" };
         public static string[] appPageExtensions = { "/Home/Index/" };
         public static List<LLMain> requ = new List<LLMain>();        
         public static Dictionary<string, string> urlDictProp = new Dictionary<string, string>();
@@ -111,6 +111,8 @@ namespace LowesLinkTemplates.Models
                     {
                         var hrefVal = nod.Attributes["href"].Value.ToLower();
                         var fileName = "";
+                        var fileExt = "";
+                        var fullFileName = "";
                         /// <summary>
                         /// generate links for documents
                         /// </summary>
@@ -122,12 +124,18 @@ namespace LowesLinkTemplates.Models
                                 if (idx != -1)
                                 {
                                     //getting file name from relative path of respective file
-                                    fileName = hrefVal.Substring(idx + 1);                                   
+                                    fileName = hrefVal.Substring(idx + 1);
                                 }
-                                urlDictProp[fileName.ToString()] = hrefVal.ToString();
+                                //Only File Name
+                                fileName = System.IO.Path.GetFileNameWithoutExtension(hrefVal);
+                                //Only File Extension
+                                fileExt = System.IO.Path.GetExtension(hrefVal);
+                                //Complete File Name
+                                fullFileName = fileName + fileExt;
+                                urlDictProp[fullFileName.ToString()] = hrefVal.ToString();
                                 string oldHref = nod.Attributes["href"].Value;
-                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName.Split('.')[0] + "?ext=" + fileName.Split('.')[1];
-                                result = result.Replace(oldHref, updatedHref);                                
+                                string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName + "?ext=" + fileExt.Split('.')[1];
+                                result = result.Replace(oldHref, updatedHref);
                             }
                         }
                         /// <summary>
