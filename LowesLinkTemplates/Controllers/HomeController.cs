@@ -59,10 +59,8 @@ namespace LowesLinkTemplates.Controllers
             }
             // catching exceptions
             catch (Exception ex)
-            {
-                var err = new LLMainErr();
-                err.Error = ex.Message;
-                return View(err.Error);
+            {                
+                return View("~/Views/Error/Error.cshtml", returnErrorObject("<div style='font-size: xx-large;font-weight: 500;' align='center' class='mt-4'>" + ex.Message +"<br/>Please Contact Admins.</div>"));
             }
         }
         /// <summary>
@@ -106,6 +104,16 @@ namespace LowesLinkTemplates.Controllers
             }
             // returning structured content back to Index Action Result
             return requ;
+        }
+
+        public List<LLMain> returnErrorObject(string errMsg)
+        {
+            List<LLMain> ifModelIsBlankList = new List<LLMain>();
+            LLMain ifModelIsBlankObj = new LLMain();
+            ifModelIsBlankObj.PageName = "Document Not Found !!";
+            ifModelIsBlankObj.Content = errMsg;
+            ifModelIsBlankList.Add(ifModelIsBlankObj);
+            return ifModelIsBlankList;
         }
 
         public ActionResult About(string id)

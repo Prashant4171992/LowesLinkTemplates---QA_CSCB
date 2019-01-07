@@ -1,0 +1,12 @@
+﻿@model List<LowesLinkTemplates.Models.LLMain>
+@{
+    ViewBag.Title = "Error";
+}
+
+<div id="pageCommonContent">
+    @if (@Model != null)
+    {
+        @Html.Raw(HttpUtility.HtmlDecode(Model[0].Content))
+    }
+</div>
+
