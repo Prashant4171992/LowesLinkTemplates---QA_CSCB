@@ -78,6 +78,7 @@ namespace LowesLinkTemplates.Controllers
             string[] downloadDocsExtensionsForBrowser = { "zip", "doc", "docx", "xls", "xlsx", "xlsm", "xlt" ,"ppt", "pptx" };
             string[] downloadVdosExtForBrowser = { "avi", "flv", "wmv", "mov", "mp4", "3gp" };
             string contentType = "";
+            //return content type for pdfs and images files
             if (openExtensionsForBrowser.Any(fileType.Contains))
             {
                 //return content type for PDFs
@@ -90,13 +91,12 @@ namespace LowesLinkTemplates.Controllers
                 {
                     contentType = "image/" + fileType;
                 }                
-            }
+            }            
             //return content type for office documents & zip files
             if (downloadDocsExtensionsForBrowser.Any(fileType.Contains))
             {
                 contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
             }
-
             if (downloadVdosExtForBrowser.Any(fileType.Contains))
             {
                 if(fileType.ToLower() == "flv")
@@ -122,7 +122,7 @@ namespace LowesLinkTemplates.Controllers
                 if (fileType.ToLower() == "wmv")
                 {
                     contentType = "video/x-ms-wmv";
-                }
+                }                
             }
             //return respective file content type
             return contentType;

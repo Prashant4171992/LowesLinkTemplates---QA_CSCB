@@ -119,13 +119,7 @@ namespace LowesLinkTemplates.Models
                         if (docExtensions.Any(hrefVal.Contains))
                         {
                             if (!secureContentExtensions.Any(hrefVal.Contains))
-                            {
-                                int idx = hrefVal.LastIndexOf('/');
-                                if (idx != -1)
-                                {
-                                    //getting file name from relative path of respective file
-                                    fileName = hrefVal.Substring(idx + 1);
-                                }
+                            {                               
                                 //Only File Name
                                 fileName = System.IO.Path.GetFileNameWithoutExtension(hrefVal);
                                 //Only File Extension
@@ -133,7 +127,7 @@ namespace LowesLinkTemplates.Models
                                 //Complete File Name
                                 fullFileName = fileName + fileExt;
                                 urlDictProp[fullFileName.ToString()] = hrefVal.ToString();
-                                string oldHref = nod.Attributes["href"].Value;
+                                string oldHref = nod.Attributes["href"].Value;                                
                                 string updatedHref = nod.Attributes["href"].Value = "/Document/Index/" + fileName + "?ext=" + fileExt.Split('.')[1];
                                 result = result.Replace(oldHref, updatedHref);
                             }
